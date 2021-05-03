@@ -48,6 +48,14 @@ app.post('/', (req, res) => {
             console.log(err)
         } else {
             console.dir(responseData)
+            // get data from response
+            const data = {
+                id: responseData.messages[0]['message-id'],
+                number: responseData.messages[0]['to']
+             }
+
+            // Emil to the clinet
+            io.emit('smsStatus', data)
         }
     }
 
@@ -61,6 +69,31 @@ const port = 3000
 
 //start server
 const server = app.listen(port, () => console.log(`Server started on port ${port}`))
+
+// connect to socket.io
+
+const io = socketio(server)
+
+io.on('connection', (socket) => {
+    console.log('Connected to socket.io')
+    io.on('disconnect', () => {
+        console.log('Disconnected from socket.io')
+    })
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* const vonage = new Vonage({
