@@ -22,12 +22,16 @@ app.use(express.static(__dirname + 'public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+// index route
+app.get('/', (req, res) => {
+    res.render('index')
+})
+
 // define port
 const port = 3000
 
 //start server
 const server = app.listen(port, () => console.log(`Server started on port ${port}`))
-
 
 
 /* const vonage = new Vonage({
