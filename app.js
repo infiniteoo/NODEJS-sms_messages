@@ -7,8 +7,30 @@ const Vonage = require('@vonage/server-sdk')
 require('dotenv').config()
 
 
+// Init the app
 
-const vonage = new Vonage({
+const app = express();
+
+// template engine setup
+app.set('view engine', 'html')
+app.engine('html', ejs.renderFile)
+
+// public folder setup
+app.use(express.static(__dirname + 'public'))
+
+// Body Parser middleware - pretty sure this isnt needed
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+// define port
+const port = 3000
+
+//start server
+const server = app.listen(port, () => console.log(`Server started on port ${port}`))
+
+
+
+/* const vonage = new Vonage({
   apiKey: process.env.SMS_API_KEY,
   apiSecret: process.env.SMS_API_SECRET
 })
@@ -27,4 +49,4 @@ vonage.message.sendSms(from, to, text, (err, responseData) => {
             console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
         }
     }
-})
+}) */
