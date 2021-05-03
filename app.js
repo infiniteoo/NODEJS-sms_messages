@@ -6,6 +6,11 @@ const socketio = require('socket.io')
 const Vonage = require('@vonage/server-sdk')
 require('dotenv').config()
 
+// Init Nexmo
+const nexmo = new Nexmo({
+    apiKey: process.env.SMS_API_KEY,
+    apiSecret: process.env.SMS_API_SECRET
+})
 
 // Init the app
 
@@ -16,7 +21,7 @@ app.set('view engine', 'html')
 app.engine('html', ejs.renderFile)
 
 // public folder setup
-app.use(express.static(__dirname + 'public'))
+app.use(express.static(__dirname + '/public'))
 
 // Body Parser middleware - pretty sure this isnt needed
 app.use(bodyParser.json())
@@ -25,6 +30,30 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // index route
 app.get('/', (req, res) => {
     res.render('index')
+})
+
+// catch form submit
+
+app.post('/', (req, res) => {
+   /*  console.log(req.body)
+    res.send(req.body) */
+    const to = req.body.number
+    const text = req.body.text
+    const from = "18336535404"
+    
+
+    nexmo.message.sendSms(from, to, text, { type: 'unicode' },
+    (err, responseData) => {
+        if(err){
+            console.log(err)
+        } else {
+            console.dir(responseData)
+        }
+    }
+
+
+
+    )
 })
 
 // define port

@@ -1,5 +1,3 @@
-const { text } = require("express")
-
 const numberInput = document.getElementById('number'),
       textInput = document.getElementById('msg'),
       button = document.getElementById('button'),
